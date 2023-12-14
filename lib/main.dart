@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:battleship/game_setup.dart';
-//import 'package:battleship/settings.dart';
+import 'package:battleship/settings.dart';
 void main() {
   runApp(const Main());
 }
-class Main extends StatelessWidget {
-  const Main({Key? key}) : super(key: key);
+
+class Main extends StatefulWidget {
+  const Main({super.key});
+
+  @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
-    //Color color = Colors.white;
-
     return Scaffold(
       backgroundColor: Colors.lightBlue,
       appBar: AppBar(
@@ -31,17 +36,32 @@ class Main extends StatelessWidget {
             ),
           ),
           ElevatedButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return const GameSetup();
+                  },
+                ),
+              );
+            },
+            child: Text(
+              "PLAY",
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+            ),
+          ),
+          ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return const GameSetup();
+                      return const Settings();
                     },
                   ),
                 );
               },
               child: Text(
-                "PLAY",
+                "SETTINGS",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
               ))
         ],
@@ -49,3 +69,8 @@ class Main extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
