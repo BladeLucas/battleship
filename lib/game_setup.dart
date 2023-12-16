@@ -1,24 +1,28 @@
 import 'dart:math';
 
+import 'package:battleship/battleship.dart';
 import 'package:battleship/ship.dart';
 import 'package:battleship/tile.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const GameSetup());
-}
+// void main() {
+//   runApp(const Setup());
+// }
 
-class GameSetup extends StatelessWidget {
-  const GameSetup({super.key});
+// class GameSetup extends StatelessWidget {
+//   const GameSetup({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: Setup());
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         debugShowCheckedModeBanner: false, home: Setup(theme: true));
+//   }
+// }
 
 class Setup extends StatefulWidget {
-  const Setup({super.key});
+  final bool theme;
+  final bool music;
+  const Setup({super.key, required this.theme, required this.music});
 
   @override
   State<Setup> createState() => _SetupState();
@@ -65,20 +69,23 @@ class _SetupState extends State<Setup> {
     bool battleshipPlaced = false;
     bool carrierPlaced = false;
 
+    print("Reset board started");
     int carrierAttempts = 0;
+    print("Place Carrier");
     while (carrierPlaced == false) {
       if (carrierDirection) {
+        late bool checkTile;
         for (int i = 0; i < carrierSize; i++) {
-          bool checkTile = newGame[carrierRow + i][carrierCol] == null;
-          if (checkTile == false) {
+          checkTile =
+              newGame[carrierRow + i][carrierCol] == null ? true : false;
+          print(newGame[carrierRow + i][carrierCol]);
+          print(checkTile);
+          if (!checkTile) {
             carrierAttempts++;
             if (carrierAttempts > 1) {
               carrierRow = Random().nextInt(5);
               carrierCol = Random().nextInt(5);
-              carrierAttempts = 0;
-              i = 0;
-            } else {
-              carrierDirection = !carrierDirection;
+              print("Carrier New coords:$carrierRow,$carrierCol");
             }
           }
         }
@@ -87,24 +94,31 @@ class _SetupState extends State<Setup> {
             newGame[carrierRow + i][carrierCol] = Ship(
                 type: ShipType.carrier,
                 size: carrierSize,
-                imagePath: 'images/ships/carrier5.png');
+                imagePath: 'images/ships/carrier5.png',
+                isHit: false);
 
             //mark the ship as placed
             carrierPlaced = true;
           }
+        } else {
+          carrierRow = Random().nextInt(5);
+          carrierCol = Random().nextInt(5);
+          print("Carrier New coords:$carrierRow,$carrierCol");
+          carrierAttempts = 0;
         }
       } else {
+        late bool checkTile;
         for (int i = 0; i < carrierSize; i++) {
-          bool checkTile = newGame[carrierRow + i][carrierCol] == null;
-          if (checkTile == false) {
+          checkTile =
+              newGame[carrierRow][carrierCol + i] == null ? true : false;
+          print(newGame[carrierRow][carrierCol + i]);
+          print(checkTile);
+          if (!checkTile) {
             carrierAttempts++;
             if (carrierAttempts > 1) {
               carrierRow = Random().nextInt(5);
               carrierCol = Random().nextInt(5);
-              carrierAttempts = 0;
-              i = 0;
-            } else {
-              carrierDirection = !carrierDirection;
+              print("Carrier New coords:$carrierRow,$carrierCol");
             }
           }
         }
@@ -113,29 +127,36 @@ class _SetupState extends State<Setup> {
             newGame[carrierRow][carrierCol + i] = Ship(
                 type: ShipType.carrier,
                 size: carrierSize,
-                imagePath: 'images/ships/carrier5.png');
+                imagePath: 'images/ships/carrier5.png',
+                isHit: false);
 
             //mark the ship as placed
             carrierPlaced = true;
           }
+        } else {
+          carrierRow = Random().nextInt(5);
+          carrierCol = Random().nextInt(5);
+          print("Carrier New coords:$carrierRow,$carrierCol");
+          carrierAttempts = 0;
         }
       }
     }
 
+    print("Place Battleship");
     int battleshipAttempts = 0;
     while (battleshipPlaced == false) {
       if (battleshipDirection) {
+        late bool checkTile;
         for (int i = 0; i < battleshipSize; i++) {
-          bool checkTile = newGame[battleshipRow + i][battleshipCol] == null;
-          if (checkTile == false) {
+          checkTile =
+              newGame[battleshipRow + i][battleshipCol] == null ? true : false;
+          print(checkTile);
+          if (!checkTile) {
             battleshipAttempts++;
             if (battleshipAttempts > 1) {
-              battleshipRow = Random().nextInt(6);
-              battleshipCol = Random().nextInt(6);
-              battleshipAttempts = 0;
-              i = 0;
-            } else {
-              battleshipDirection = !battleshipDirection;
+              battleshipRow = Random().nextInt(5);
+              battleshipCol = Random().nextInt(5);
+              print("Battleship New coords:$battleshipRow,$battleshipCol");
             }
           }
         }
@@ -144,24 +165,30 @@ class _SetupState extends State<Setup> {
             newGame[battleshipRow + i][battleshipCol] = Ship(
                 type: ShipType.battleship,
                 size: battleshipSize,
-                imagePath: 'images/ships/battleship4.png');
+                imagePath: 'images/ships/battleship4.png',
+                isHit: false);
 
             //mark the ship as placed
             battleshipPlaced = true;
           }
+        } else {
+          battleshipRow = Random().nextInt(6);
+          battleshipCol = Random().nextInt(6);
+          print("battleship New coords:$battleshipRow,$battleshipCol");
+          battleshipAttempts = 0;
         }
       } else {
+        late bool checkTile;
         for (int i = 0; i < battleshipSize; i++) {
-          bool checkTile = newGame[battleshipRow + i][battleshipCol] == null;
-          if (checkTile == false) {
+          checkTile =
+              newGame[battleshipRow][battleshipCol + i] == null ? true : false;
+          print(checkTile);
+          if (!checkTile) {
             battleshipAttempts++;
             if (battleshipAttempts > 1) {
               battleshipRow = Random().nextInt(6);
               battleshipCol = Random().nextInt(6);
-              battleshipAttempts = 0;
-              i = 0;
-            } else {
-              battleshipDirection = !battleshipDirection;
+              print("Battleship New coords:$battleshipRow,$battleshipCol");
             }
           }
         }
@@ -170,29 +197,38 @@ class _SetupState extends State<Setup> {
             newGame[battleshipRow][battleshipCol + i] = Ship(
                 type: ShipType.battleship,
                 size: battleshipSize,
-                imagePath: 'images/ships/battleship4.png');
+                imagePath: 'images/ships/battleship4.png',
+                isHit: false);
 
             //mark the ship as placed
             battleshipPlaced = true;
           }
+        } else {
+          battleshipRow = Random().nextInt(6);
+          battleshipCol = Random().nextInt(6);
+          print("battleship New coords:$battleshipRow,$battleshipCol");
+          battleshipAttempts = 0;
         }
       }
     }
 
+    print("Place Submarine");
     int submarineAttempts = 0;
     while (submarinePlaced == false) {
       if (submarineDirection) {
+        late bool checkTile;
         for (int i = 0; i < submarineSize; i++) {
-          bool checkTile = newGame[submarineRow + i][submarineCol] == null;
-          if (checkTile == false) {
+          checkTile =
+              newGame[submarineRow + i][submarineCol] == null ? true : false;
+          print(checkTile);
+          print(newGame[submarineRow + i][submarineCol]);
+          if (!checkTile) {
             submarineAttempts++;
+            print(submarineAttempts);
             if (submarineAttempts > 1) {
               submarineRow = Random().nextInt(7);
               submarineCol = Random().nextInt(7);
-              submarineAttempts = 0;
-              i = 0;
-            } else {
-              submarineDirection = !submarineDirection;
+              print("Submarine New coords:$submarineRow,$submarineCol");
             }
           }
         }
@@ -201,24 +237,31 @@ class _SetupState extends State<Setup> {
             newGame[submarineRow + i][submarineCol] = Ship(
                 type: ShipType.submarine,
                 size: submarineSize,
-                imagePath: 'images/ships/submarine3.png');
+                imagePath: 'images/ships/submarine3.png',
+                isHit: false);
 
             //mark the ship as placed
             submarinePlaced = true;
           }
+        } else {
+          submarineRow = Random().nextInt(7);
+          submarineCol = Random().nextInt(7);
+          print("Submarine New coords:$submarineRow,$submarineCol");
+          submarineAttempts = 0;
         }
       } else {
+        late bool checkTile;
         for (int i = 0; i < submarineSize; i++) {
-          bool checkTile = newGame[submarineRow + i][submarineCol] == null;
-          if (checkTile == false) {
+          checkTile =
+              newGame[submarineRow][submarineCol + i] == null ? true : false;
+          print(checkTile);
+          if (!checkTile) {
             submarineAttempts++;
+            print(submarineAttempts);
             if (submarineAttempts > 1) {
               submarineRow = Random().nextInt(7);
               submarineCol = Random().nextInt(7);
-              submarineAttempts = 0;
-              i = 0;
-            } else {
-              submarineDirection = !submarineDirection;
+              print("Submarine New coords:$submarineRow,$submarineCol");
             }
           }
         }
@@ -227,29 +270,35 @@ class _SetupState extends State<Setup> {
             newGame[submarineRow][submarineCol + i] = Ship(
                 type: ShipType.submarine,
                 size: submarineSize,
-                imagePath: 'images/ships/submarine3.png');
+                imagePath: 'images/ships/submarine3.png',
+                isHit: false);
 
             //mark the ship as placed
             submarinePlaced = true;
           }
+        } else {
+          submarineRow = Random().nextInt(7);
+          submarineCol = Random().nextInt(7);
+          print("Submarine New coords:$submarineRow,$submarineCol");
+          submarineAttempts = 0;
         }
       }
     }
 
+    print("Place Rescue Ship");
     int rescueAttempts = 0;
     while (rescuePlaced == false) {
       if (rescueDirection) {
+        late bool checkTile;
         for (int i = 0; i < rescueSize; i++) {
-          bool checkTile = newGame[rescueRow + i][rescueCol] == null;
-          if (checkTile == false) {
+          checkTile = newGame[rescueRow + i][rescueCol] == null ? true : false;
+          print(checkTile);
+          if (!checkTile) {
             rescueAttempts++;
             if (rescueAttempts > 1) {
               rescueRow = Random().nextInt(8);
               rescueCol = Random().nextInt(8);
-              rescueAttempts = 0;
-              i = 0;
-            } else {
-              rescueDirection = !rescueDirection;
+              print("Rescue New coords:$rescueRow,$rescueCol");
             }
           }
         }
@@ -258,24 +307,29 @@ class _SetupState extends State<Setup> {
             newGame[rescueRow + i][rescueCol] = Ship(
                 type: ShipType.rescue,
                 size: rescueSize,
-                imagePath: 'images/ships/rescueShip2.png');
+                imagePath: 'images/ships/rescueShip2.png',
+                isHit: false);
 
             //mark the ship as placed
             rescuePlaced = true;
           }
+        } else {
+          rescueRow = Random().nextInt(8);
+          rescueCol = Random().nextInt(8);
+          print("rescue New coords:$rescueRow,$rescueCol");
+          rescueAttempts = 0;
         }
       } else {
+        late bool checkTile;
         for (int i = 0; i < rescueSize; i++) {
-          bool checkTile = newGame[rescueRow + i][rescueCol] == null;
-          if (checkTile == false) {
+          checkTile = newGame[rescueRow][rescueCol + i] == null ? true : false;
+          print(checkTile);
+          if (!checkTile) {
             rescueAttempts++;
             if (rescueAttempts > 1) {
               rescueRow = Random().nextInt(8);
               rescueCol = Random().nextInt(8);
-              rescueAttempts = 0;
-              i = 0;
-            } else {
-              rescueDirection = !rescueDirection;
+              print("Rescue New coords:$rescueRow,$rescueCol");
             }
           }
         }
@@ -284,29 +338,35 @@ class _SetupState extends State<Setup> {
             newGame[rescueRow][rescueCol + i] = Ship(
                 type: ShipType.rescue,
                 size: rescueSize,
-                imagePath: 'images/ships/rescueShip2.png');
+                imagePath: 'images/ships/rescueShip2.png',
+                isHit: false);
 
             //mark the ship as placed
             rescuePlaced = true;
           }
+        } else {
+          rescueRow = Random().nextInt(8);
+          rescueCol = Random().nextInt(8);
+          print("rescue New coords:$rescueRow,$rescueCol");
+          rescueAttempts = 0;
         }
       }
     }
 
+    print("Place Patrol Boat");
     int patrolAttempts = 0;
     while (patrolPlaced == false) {
       if (patrolDirection) {
+        late bool checkTile;
         for (int i = 0; i < patrolSize; i++) {
-          bool checkTile = newGame[patrolRow + i][patrolCol] == null;
-          if (checkTile == false) {
+          checkTile = newGame[patrolRow + i][patrolCol] == null ? true : false;
+          print(checkTile);
+          if (!checkTile) {
             patrolAttempts++;
             if (patrolAttempts > 1) {
               patrolRow = Random().nextInt(8);
               patrolCol = Random().nextInt(8);
-              patrolAttempts = 0;
-              i = 0;
-            } else {
-              patrolDirection = !patrolDirection;
+              print("Patrol New coords:$patrolRow,$patrolCol");
             }
           }
         }
@@ -315,24 +375,30 @@ class _SetupState extends State<Setup> {
             newGame[patrolRow + i][patrolCol] = Ship(
                 type: ShipType.patrol,
                 size: patrolSize,
-                imagePath: 'images/ships/patrolBoat1.png');
+                imagePath: 'images/ships/patrolBoat1.png',
+                isHit: false);
 
             //mark the ship as placed
             patrolPlaced = true;
           }
+        } else {
+          patrolRow = Random().nextInt(8);
+          patrolCol = Random().nextInt(8);
+          print("patrol New coords:$patrolRow,$patrolCol");
+          patrolAttempts = 0;
         }
       } else {
+        late bool checkTile;
         for (int i = 0; i < patrolSize; i++) {
-          bool checkTile = newGame[patrolRow + i][patrolCol] == null;
-          if (checkTile == false) {
+          checkTile = newGame[patrolRow][patrolCol + i] == null ? true : false;
+          print(checkTile);
+          print(checkTile);
+          if (!checkTile) {
             patrolAttempts++;
             if (patrolAttempts > 1) {
               patrolRow = Random().nextInt(8);
               patrolCol = Random().nextInt(8);
-              patrolAttempts = 0;
-              i = 0;
-            } else {
-              patrolDirection = !patrolDirection;
+              print("Patrol New coords:$patrolRow,$patrolCol");
             }
           }
         }
@@ -341,11 +407,17 @@ class _SetupState extends State<Setup> {
             newGame[patrolRow][patrolCol + i] = Ship(
                 type: ShipType.patrol,
                 size: patrolSize,
-                imagePath: 'images/ships/patrolBoat1.png');
+                imagePath: 'images/ships/patrolBoat1.png',
+                isHit: false);
 
             //mark the ship as placed
             patrolPlaced = true;
           }
+        } else {
+          patrolRow = Random().nextInt(8);
+          patrolCol = Random().nextInt(8);
+          print("patrol New coords:$patrolRow,$patrolCol");
+          patrolAttempts = 0;
         }
       }
     }
@@ -358,17 +430,21 @@ class _SetupState extends State<Setup> {
     return direction;
   }
 
-  void randomize() {}
+  void randomize() {
+    setState(() {
+      initializeGame();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     //Color color = Colors.white;
 
     return Scaffold(
-      backgroundColor: Colors.lightBlue,
+      backgroundColor: widget.theme ? Colors.lightBlue : Colors.grey,
       appBar: AppBar(
         toolbarHeight: 80,
-        backgroundColor: Colors.blue,
+        backgroundColor: widget.theme ? Colors.lightBlue : Colors.grey,
         title: Image.asset(
           'images/battleshipBanner.png',
           fit: BoxFit.scaleDown,
@@ -385,7 +461,7 @@ class _SetupState extends State<Setup> {
             ),
           ),
           SizedBox(
-            height: 500,
+            height: 450,
             child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 10),
@@ -400,16 +476,6 @@ class _SetupState extends State<Setup> {
                     ship: board[row][col],
                   );
                 }
-                /*return Container(
-                  height: 10,
-                  width: 10,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        width: 1,
-                        color: Colors.black,
-                      )),
-                )*/
 
                 /*return DragTarget<Color>(
                     onAccept: (data) => setState(() => color = data),
@@ -427,12 +493,38 @@ class _SetupState extends State<Setup> {
 
                 ),
           ),
-          ElevatedButton(
-              onPressed: randomize,
-              child: Text(
-                "Randomize Ships",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
-              ))
+          SizedBox(
+              width: 250,
+              height: 75,
+              child: ElevatedButton(
+                  onPressed: randomize,
+                  child: Text(
+                    "Randomize Ships",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                  ))),
+          Padding(
+              padding: EdgeInsets.all(30.0),
+              child: SizedBox(
+                  width: 250,
+                  height: 75,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) => Game(
+                                      board: board,
+                                      theme: widget.theme,
+                                      music: widget.music,
+                                    )),
+                            (route) => false);
+                      },
+                      child: Text(
+                        "Continue",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w800),
+                      )))),
+
           /*Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

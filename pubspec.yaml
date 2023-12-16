@@ -1,5 +1,5 @@
 name: battleship
-description: A sample command-line application.
+description: A battleship game.
 version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
@@ -8,8 +8,11 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  audioplayers: ^5.2.1
+  awesome_dialog: ^3.1.0
   flutter:
     sdk: flutter
+    # audioplayers: ^5.2.1
   # path: ^1.8.0
 
 dev_dependencies:
@@ -19,9 +22,13 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    #images
     - images/battleshipBanner.png
     - images/ships/patrolBoat1.png
     - images/ships/rescueShip2.png
     - images/ships/submarine3.png
     - images/ships/battleship4.png
     - images/ships/carrier5.png
+    #sound files
+    - assets/music/Battle.mp3
+    - assets/music/firing.mp3

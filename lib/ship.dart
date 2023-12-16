@@ -4,6 +4,11 @@ class Ship {
   final ShipType type;
   final int size;
   final String imagePath;
+  bool isHit;
 
-  Ship({required this.type, required this.size, required this.imagePath});
+  Ship(
+      {required this.type,
+      required this.size,
+      required this.imagePath,
+      required this.isHit});
 }
